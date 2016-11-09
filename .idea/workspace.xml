@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="61dd2f47-25cb-4a57-8ff3-ff0f7c62f484" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/cat-meme.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/dog-meme.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/WebServer/NewWebServer.class" afterPath="$PROJECT_DIR$/out/production/WebServer/NewWebServer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/NewWebServer.java" afterPath="$PROJECT_DIR$/src/NewWebServer.java" />
-    </list>
+    <list default="true" id="61dd2f47-25cb-4a57-8ff3-ff0f7c62f484" name="Default" comment="" />
     <ignored path="WebServer.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -598,12 +587,12 @@
       <option name="presentableId" value="Default" />
       <updated>1478647414433</updated>
       <workItem from="1478647421974" duration="233000" />
-      <workItem from="1478647719630" duration="2447000" />
+      <workItem from="1478647719630" duration="3016000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2680000" />
+    <option name="totallyTimeSpent" value="3249000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="-1" width="1282" height="781" extended-state="7" />
