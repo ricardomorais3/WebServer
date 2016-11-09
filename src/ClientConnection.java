@@ -33,12 +33,13 @@ public class ClientConnection implements Runnable {
                 clientSocket.close();
                 return;
             }
-            String getFileName = headerClient.split(" ")[1].substring(1);
 
-            if (getFileName.equals("")) {
-                getFileName = "index.html";
+            String fileName = getFileName(headerClient);
+
+            if (fileName.equals("")) { //TODO: passar este codigo para o metodo getFileName
+                fileName = "index.html";
             }
-            file = new File(PATH + getFileName);
+            file = new File(PATH + fileName);
             String header = buildHeader();
 
             DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
@@ -51,6 +52,10 @@ public class ClientConnection implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getFileName(String headerClient) {
+        return headerClient.split(" ")[1].substring(1);
     }
 
     public String buildHeader() {
