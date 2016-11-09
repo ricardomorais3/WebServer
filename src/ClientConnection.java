@@ -88,10 +88,10 @@ public class ClientConnection implements Runnable {
         long fileSize = file.length();
         String statusCode = (fileExists) ? "200 Document Follows" : "404 Not Found";
 
-        return "HTTP/1.1 " + statusCode + "\\r\\n\n" +
-                "Content-Type: " + getFileType(file) + "; charset=UTF-8\\r\\n\n" +
-                "Content-Length: " + fileSize + "\\r\\n\n" +
-                "\\r\\n\n\n";
+        return "HTTP/1.1 " + statusCode + "\r\n" +
+                "Content-Type: " + getFileType(file) + "; charset=UTF-8\r\n" +
+                "Content-Length: " + fileSize + "\r\n" +
+                " \n\n";
     }
 
     private String getFileExtension(File file) {
@@ -103,7 +103,7 @@ public class ClientConnection implements Runnable {
         String fileExtension = getFileExtension(file);
         switch (fileExtension) {
             case "html":
-                return "text/html";
+                return "text/" + fileExtension;
             case "ico":
             case "png":
             case "jpg":
