@@ -1,4 +1,5 @@
 import com.sun.corba.se.spi.activation.Server;
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -11,9 +12,6 @@ import java.nio.file.Paths;
  * Created by codecadet on 08/11/16.
  */
 public class NewWebServer {
-
-    static final String PATH = "resources/";
-    static private File file;
 
     public static void main(String[] args) {
 

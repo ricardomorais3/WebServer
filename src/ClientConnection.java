@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 public class ClientConnection implements Runnable {
 
     static final String PATH = "resources/";
-    private File file;
+    static final String ERROR_FILE = "404.html";
     private Socket clientSocket;
 
     public ClientConnection(Socket clientSocket) {
@@ -21,14 +21,14 @@ public class ClientConnection implements Runnable {
 
     @Override
     public void run() {
-
+        //TODO: change this line after changing the method referred in line 48
         System.out.println(java.lang.Thread.currentThread().getName());
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String headerClient = bufferedReader.readLine();
 
-            System.out.println("o pedido do meu client é "+headerClient);
+            System.out.println("O header do meu client é " + headerClient);
             if (headerClient == null) {
                 clientSocket.close();
                 return;
@@ -36,15 +36,16 @@ public class ClientConnection implements Runnable {
 
             String fileName = getFileName(headerClient);
 
-            if (fileName.equals("")) { //TODO: passar este codigo para o metodo getFileName
-                fileName = "index.html";
+            File file = new File(PATH + fileName);
+            boolean fileExists = file.exists();
+            if (!fileExists) {
+                file = new File(PATH + ERROR_FILE);
             }
-            file = new File(PATH + fileName);
-            String header = buildHeader();
+            String header = buildHeader(file, fileExists);
 
             DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
             dataOutputStream.writeBytes(header);
-            System.out.println("The following file will be sent: " + PATH + file.getName());
+            //TODO: create method that converts file/file_path to byte[]
             dataOutputStream.write(Files.readAllBytes(Paths.get(PATH + file.getName())));
 
             clientSocket.close();
@@ -55,44 +56,43 @@ public class ClientConnection implements Runnable {
     }
 
     private String getFileName(String headerClient) {
-        return headerClient.split(" ")[1].substring(1);
+        String temp = headerClient.split(" ")[1].substring(1);
+        if (temp.equals("")) {
+            temp = "index.html";
+        }
+        return temp;
     }
 
-    public String buildHeader() {
+    public String buildHeader(File file, boolean fileExists) {
 
-        String statusCode;
-        String fileType = "";
         long fileSize = file.length();
-
-        if (!file.exists()) {
-            file = new File(PATH + "404.html");
-            statusCode = "404 Not Found";
-        } else {
-            statusCode = "200 Document Follows";
-        }
-
-        String fileExtension = file.getName().split("\\.")[1];
-
-        switch (fileExtension) {
-            case "html":
-                fileType = "text/html";
-                break;
-            case "ico":
-                fileType = "image/x-icon";
-                break;
-            case "png":
-                fileType = "image/png";
-                break;
-            case "jpg":
-                fileType = "image/jpg";
-                break;
-            default:
-                System.out.println("Something went terribly wrong...");
-        }
+        String statusCode = (fileExists) ? "200 Document Follows" : "404 Not Found";
 
         return "HTTP/1.1 " + statusCode + "\\r\\n\n" +
-                "Content-Type: " + fileType + "; charset=UTF-8\\r\\n\n" +
+                "Content-Type: " + getFileType(file) + "; charset=UTF-8\\r\\n\n" +
                 "Content-Length: " + fileSize + "\\r\\n\n" +
                 "\\r\\n\n\n";
     }
+
+    private String getFileExtension(File file) {
+        return file.getName().split("\\.")[1];
+    }
+
+    private String getFileType(File file) {
+
+        String fileExtension = getFileExtension(file);
+        switch (fileExtension) {
+            case "html":
+                return "text/html";
+            case "ico":
+            case "png":
+            case "jpg":
+                return "image/" + fileExtension;
+            default:
+                System.out.println("Something went terribly wrong...");
+                return null;
+        }
+    }
+
+
 }
