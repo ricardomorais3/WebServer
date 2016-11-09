@@ -26,8 +26,8 @@ public class NewWebServer {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String headerClient = bufferedReader.readLine();
 
-                System.out.println("the browser asked me for: "+headerClient);
                 if(headerClient == null){
+                    clientSocket.close();
                     continue;
                 }
                 String getFileName = headerClient.split(" ")[1].substring(1);
