@@ -21,11 +21,15 @@ public class NewWebServer {
             Socket clientSocket;
 
             while(true){
+
                 clientSocket = serverSocket.accept();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String headerClient = bufferedReader.readLine();
 
-                System.out.println(headerClient);
+                System.out.println("the browser asked me for: "+headerClient);
+                if(headerClient == null){
+                    continue;
+                }
                 String getFileName = headerClient.split(" ")[1].substring(1);
 
                 if(getFileName.equals("")){
@@ -75,13 +79,16 @@ public class NewWebServer {
             case "png":
                 fileType = "image/png";
                 break;
+            case "jpg":
+                fileType = "image/jpg";
+                break;
             default:
                 System.out.println("Something went terribly wrong...");
         }
 
         return "HTTP/1.1 " + statusCode + "\\r\\n\n" +
                 "Content-Type: " + fileType + "; charset=UTF-8\\r\\n\n" +
-                "Content-Length: " + fileSize + " \\r\\n\n" +
+                "Content-Length: " + fileSize + "\\r\\n\n" +
                 "\\r\\n\n\n";
     }
 
