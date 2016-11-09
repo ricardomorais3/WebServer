@@ -1,18 +1,13 @@
-import sun.jvm.hotspot.runtime.Thread;
-
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 
 /**
  * Created by codecadet on 09/11/16.
  */
 public class ClientConnection implements Runnable {
 
-    static final String PATH = "resources/";
-    static final String ERROR_FILE = "404.html";
+    private static final String PATH = "resources/";
+    private static final String ERROR_FILE = "404.html";
     private Socket clientSocket;
 
     public ClientConnection(Socket clientSocket) {
@@ -21,9 +16,8 @@ public class ClientConnection implements Runnable {
 
     @Override
     public void run() {
-        //TODO: change this line after changing the method referred in line 48
-        System.out.println(java.lang.Thread.currentThread().getName());
 
+        System.out.println(java.lang.Thread.currentThread().getName());
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String headerClient = bufferedReader.readLine();
@@ -45,14 +39,40 @@ public class ClientConnection implements Runnable {
 
             DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
             dataOutputStream.writeBytes(header);
-            //TODO: create method that converts file/file_path to byte[]
-            dataOutputStream.write(Files.readAllBytes(Paths.get(PATH + file.getName())));
+            dataOutputStream.write(convertToBytes(file));
 
             clientSocket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private byte[] convertToBytes(File file) {
+
+        FileInputStream fileInputStream;
+        ByteArrayOutputStream byteArrayOutputStream = null;
+
+        try {
+            fileInputStream = new FileInputStream(file);
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = 0;
+            while ((read = fileInputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, read);
+            }
+
+            fileInputStream.close();
+            byteArrayOutputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(byteArrayOutputStream!=null){
+            return byteArrayOutputStream.toByteArray();
+        }
+        return null;
     }
 
     private String getFileName(String headerClient) {
@@ -93,6 +113,5 @@ public class ClientConnection implements Runnable {
                 return null;
         }
     }
-
 
 }
